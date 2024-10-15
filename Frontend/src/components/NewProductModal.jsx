@@ -35,13 +35,13 @@ const NewProductModal = ({ open, setOpen, product }) => {
         <div className="mt-4 flex flex-col sm:flex-row justify-between space-y-2 sm:space-y-0 sm:space-x-2">
           <button
             onClick={handleAddToCart}
-            className="flex-1 bg-green-500 text-white rounded px-3 py-1 sm:py-2 hover:bg-green-600 transition duration-200 text-xs sm:text-sm shadow-md hover:shadow-lg"
+            className="flex-1 bg-green-500 text-white rounded-lg px-4 py-2 sm:py-3 hover:bg-green-600 transition duration-200 text-sm shadow-md hover:shadow-lg"
           >
             Add to Cart
           </button>
           <button
             onClick={() => setOpen(false)}
-            className="flex-1 bg-gray-300 text-gray-700 rounded px-3 py-1 sm:py-2 hover:bg-gray-400 transition duration-200 text-xs sm:text-sm shadow-md hover:shadow-lg"
+            className="flex-1 bg-gray-300 text-gray-700 rounded-lg px-4 py-2 sm:py-3 hover:bg-gray-400 transition duration-200 text-sm shadow-md hover:shadow-lg"
           >
             Close
           </button>
