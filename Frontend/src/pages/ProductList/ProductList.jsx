@@ -83,7 +83,7 @@ export default function ProductList() {
 
           <button
             onClick={() => console.log("Search for:", searchQuery)} // You can replace this with your search logic
-            className="ml-2 bg-blue-500 text-white rounded-lg px-4 py-2"
+            className="ml-2 bg-green-500 text-white rounded-lg px-4 py-2"
           >
             Search
           </button>
@@ -104,7 +104,9 @@ export default function ProductList() {
       </header>
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Products</h2>
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          {" "}
+          {/* Changed to grid-cols-2 */}
           {filteredProducts.map((product) => (
             <div
               key={product.id}
@@ -118,10 +120,14 @@ export default function ProductList() {
                   className="h-full w-full object-cover object-center group-hover:opacity-75"
                 />
               </div>
-              <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-              <p className="mt-1 text-lg font-medium text-gray-900">
-                {product.price}
-              </p>
+              <div className="mt-4">
+                {" "}
+                {/* Added a div to wrap text elements */}
+                <h3 className="text-sm text-gray-700">{product.name}</h3>
+                <p className="mt-1 text-lg font-medium text-gray-900">
+                  {product.price}
+                </p>
+              </div>
             </div>
           ))}
         </div>
