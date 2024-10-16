@@ -113,7 +113,7 @@ export default function ProductList() {
 
   return (
     <div className="bg-white">
-      <header className="flex justify-between items-center p-4 bg-green-100">
+      <header className="sticky top-0 z-10 flex justify-between items-center p-4 bg-green-100">
         <div className="flex items-center">
           <input
             type="text"
