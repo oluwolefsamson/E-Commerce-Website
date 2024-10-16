@@ -193,41 +193,7 @@ const Signup = () => {
                   </label>
                 </div>
               </div>
-              <div className="mb-5 flex items-center gap-3">
-                <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
-                  <img
-                    src={formData.photo || profile}
-                    alt="Avatar"
-                    className="w-full rounded-full"
-                  />
-                </figure>
 
-                <div className="relative w-[130px] h-[50px]">
-                  <input
-                    type="file"
-                    name="photo"
-                    id="customFile"
-                    accept=".jpg, .png"
-                    onChange={handleImageUpload}
-                    className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                  />
-
-                  <label
-                    htmlFor="customFile"
-                    className="absolute top-0 left-0 w-full h-full flex items-center px-[0.75rem] py-[0.375rem] text-[15px] leading-6 overflow-hidden bg-green-100 text-headingColor font-semibold rounded-lg truncate cursor-pointer"
-                  >
-                    {imageLoading ? (
-                      <HashLoader
-                        size={20}
-                        color="white"
-                        style={{ marginLeft: "20px" }}
-                      />
-                    ) : (
-                      "Upload Photo"
-                    )}
-                  </label>
-                </div>
-              </div>
               <div className="mb-5 flex items-center justify-between">
                 <label className="text-headingColor font-bold text-[16px] leading-7">
                   Gender:
