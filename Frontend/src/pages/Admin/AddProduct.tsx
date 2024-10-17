@@ -81,7 +81,7 @@ const AddProduct = () => {
           {/* Form section */}
           <div className="lg:pl-16 py-10 lg:py-0">
             <h3 className="text-headingColor text-[22px] leading-9 font-bold mb-10">
-              Welcome Admin. <br /> Add a{" "}
+              <p className="text-blue-600 font-black"> Welcome Admin</p> Add a{" "}
               <span className="text-green-500">New Product</span>
             </h3>
 
