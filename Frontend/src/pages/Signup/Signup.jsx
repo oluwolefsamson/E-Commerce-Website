@@ -48,7 +48,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        `https://e-commerce-website-wpi1.onrender.com/api/users/register`,
+        `https://ecommerce-website-jhgs.onrender.com/api/users/register`,
         formData
       );
       console.log(response.data);

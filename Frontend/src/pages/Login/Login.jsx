@@ -29,7 +29,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        `https://e-commerce-website-wpi1.onrender.com/api/users/login`, // Backend API URL
+        `https://ecommerce-website-jhgs.onrender.com/api/users/login`, // Backend API URL
         formData
       );
 
