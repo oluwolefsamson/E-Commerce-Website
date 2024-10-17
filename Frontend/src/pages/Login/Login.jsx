@@ -9,7 +9,6 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "patient", // Default role
   });
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -30,28 +29,35 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        `https://mernstackdoctorbooking.onrender.com/api/v1/auth/login`,
+        "http://localhost:8000/api/users/login", // Backend API URL
         formData
       );
 
       if (response.data.token) {
-        const userRole = response.data.role;
+        const userRole = response.data.user.role; // Get user role from the response
 
-        if (userRole === "patient") {
-          localStorage.setItem("authToken", response.data.token);
-          navigate("/userpage", { replace: true });
+        // Store the JWT token in localStorage
+        localStorage.setItem("authToken", response.data.token);
+
+        // Role-based redirection
+        if (userRole === "admin") {
+          // Redirect Admins to the addproduct page
+          navigate("/addproduct", { replace: true });
+        } else if (userRole === "user") {
+          // Redirect Users to the productlist page
+          navigate("/products", { replace: true });
         } else {
-          setError("Only patients are allowed to log in.");
+          setError("Invalid role detected.");
         }
       } else {
         setError("Login failed. Please check your credentials and try again.");
       }
     } catch (error) {
-      console.error("Login error:", error);
       setError(
-        error.response?.data?.message ||
+        error.response?.data?.error ||
           "Something went wrong. Please try again later."
       );
+      alert("Login failed. Please check your credentials and try again.");
     } finally {
       setLoading(false);
     }

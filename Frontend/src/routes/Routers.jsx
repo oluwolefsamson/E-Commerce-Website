@@ -5,6 +5,7 @@ import Signup from "../pages/Signup/Signup";
 import ProductList from "../pages/ProductList/ProductList";
 import CartPage from "../pages/CartPage/CartPage";
 import { CartProvider } from "../components/CartContext";
+import AddProduct from "../pages/Admin/AddProduct";
 
 const Routers = () => {
   return (
@@ -14,6 +15,7 @@ const Routers = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/products" element={<ProductList />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/addproduct" element={<AddProduct />} />
         {/* Ensure this is the exact path */}
       </Routes>
     </CartProvider>

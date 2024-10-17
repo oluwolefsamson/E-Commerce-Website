@@ -1,87 +1,54 @@
 import React, { useState } from "react";
 import SignupImg from "../../assets/images/signup.jpg";
-import profile from "../../assets/images/profile.jpg";
 import { Link, useNavigate } from "react-router-dom";
-import { DotLoader, HashLoader } from "react-spinners";
+import { HashLoader } from "react-spinners";
 import axios from "axios";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
-    photo: "", // This will store the Cloudinary image URL
-    gender: "",
-    role: "patient", // Default role set to 'patient'
-    address: "", // Add this line
+    role: "", // Role dropdown
     phone: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imageLoading, setImageLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append(
-      "upload_preset",
-      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
-    );
-
-    setImageLoading(true);
-
-    try {
-      const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${
-          import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
-        }/image/upload`,
-        formData
-      );
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        photo: response.data.secure_url,
-      }));
-    } catch (error) {
-      console.error("Image upload failed:", error);
-      setError("Failed to upload image. Please try again.");
-    } finally {
-      setImageLoading(false);
+  const validateForm = () => {
+    // Basic validation (extend as needed)
+    if (
+      !formData.username ||
+      !formData.email ||
+      !formData.password ||
+      !formData.phone ||
+      !formData.role
+    ) {
+      return false;
     }
+    // Add further validation as necessary
+    return true;
   };
 
-  const isValidPassword = (password) => {
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
-    return passwordRegex.test(password);
-  };
-
-  const submitHandler = async (event) => {
-    event.preventDefault();
-    console.log(formData); // Add this line to see the complete data
-
-    setLoading(true);
-    setError(""); // Clear any previous errors
-
-    if (!isValidPassword(formData.password)) {
-      setLoading(false);
-      setError(
-        "Password must be at least 8 characters long and include uppercase, lowercase, and a number."
-      );
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) {
+      setError("All fields are required.");
       return;
     }
 
+    setLoading(true);
+    setError("");
+
     try {
       const response = await axios.post(
-        `https://mernstackdoctorbooking.onrender.com/api/v1/auth/register`,
+        "http://localhost:8000/api/users/register",
         formData,
         {
           headers: {
@@ -89,23 +56,10 @@ const Signup = () => {
           },
         }
       );
-
-      if (response.status === 201) {
-        alert("User created successfully.");
-        navigate("/login");
-      }
-    } catch (error) {
-      if (error.response) {
-        if (error.response.status === 409) {
-          navigate("/login");
-        } else if (error.response.status === 400) {
-          setError("User already exists. Please log in.");
-        } else {
-          setError("An error occurred. Please try again later.");
-        }
-      } else {
-        setError("An error occurred. Please try again later.");
-      }
+      console.log(response.data);
+      navigate("/"); // Redirect to login page after successful registration
+    } catch (err) {
+      setError(err.response?.data?.error || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -119,7 +73,7 @@ const Signup = () => {
             <figure className="rounded-l-lg">
               <img
                 src={SignupImg}
-                alt="Signup"
+                alt="User signing up"
                 className="w-full rounded-l-lg h-[700px]"
               />
             </figure>
@@ -134,12 +88,12 @@ const Signup = () => {
                 <input
                   type="text"
                   placeholder="Enter Your Full Name"
-                  name="name"
-                  value={formData.name}
+                  name="username"
+                  value={formData.username}
                   onChange={handleInputChange}
                   className="w-full px-2 py-3 border-b border-solid border-[#00ff9561] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor cursor-pointer"
                   required
-                  autoComplete="name"
+                  autoComplete="username"
                 />
               </div>
               <div className="mb-5">
@@ -156,14 +110,14 @@ const Signup = () => {
               </div>
               <div className="mb-5">
                 <input
-                  type="phone"
+                  type="tel"
                   placeholder="Enter Your Phone Number"
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
                   className="w-full px-2 py-3 border-b border-solid border-[#00ff9561] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor cursor-pointer"
                   required
-                  autoComplete="phone"
+                  autoComplete="tel"
                 />
               </div>
               <div className="mb-5">
@@ -196,20 +150,21 @@ const Signup = () => {
 
               <div className="mb-5 flex items-center justify-between">
                 <label className="text-headingColor font-bold text-[16px] leading-7">
-                  Gender:
+                  Role:
                   <select
-                    name="gender"
-                    value={formData.gender}
+                    name="role"
+                    value={formData.role}
                     onChange={handleInputChange}
                     className="text-textColor font-semibold text-[15px] leading-7 px-4 py-3 focus:outline-none"
+                    required
                   >
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
+                    <option value="">Select Role</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
                   </select>
                 </label>
               </div>
+
               {error && (
                 <div className="mb-5 text-red-600 text-[16px]">{error}</div>
               )}
@@ -231,7 +186,7 @@ const Signup = () => {
             <div className="mt-8">
               <p className="text-[15px] leading-7 text-headingColor">
                 Already have an account?{" "}
-                <Link to="/products" className="text-green-400">
+                <Link to="/" className="text-green-400">
                   Login here
                 </Link>
               </p>
