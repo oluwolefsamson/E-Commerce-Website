@@ -11,42 +11,25 @@ dotenv.config();
 
 const app = express();
 
-// Define allowed origins for CORS
 const allowedOrigins = [
-  "https://e-commerce-website-iota-taupe.vercel.app", // Your Vercel app
-  "http://localhost:5173", // Local development
-  "https://e-commerce-website1-4kwy.onrender.com", // Your Render backend
+  "https://e-commerce-website-iota-taupe.vercel.app", // my Vercel app
+  "http://localhost:5173", // my local development
 ];
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg =
-          "The CORS policy for this site does not allow access from the specified Origin.";
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-    credentials: true, // Enable sending cookies with requests
+    origin: allowedOrigins,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
   })
 );
 
 // Middleware to parse JSON
 app.use(express.json());
 
-// Handle preflight requests
-app.options("*", cors());
-
 // MongoDB Connection
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB connected successfully");
   })
@@ -64,12 +47,10 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-// Health check route
 app.get("/", (req, res) => {
   res.send("API is working");
 });
 
-// Start server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
