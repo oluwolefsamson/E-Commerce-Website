@@ -12,8 +12,9 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-  "https://ecommerce-website-jhgs.onrender.com", // my Vercel app
-  "http://localhost:5173", // my local development
+  "https://e-commerce-website1-4kwy.onrender.com", // my Vercel app
+  "http://localhost:5173",
+  "https://e-commerce-website-iota-taupe.vercel.app", // my local development
 ];
 
 app.use(
