@@ -34,10 +34,12 @@ const Login = () => {
       );
 
       if (response.data.token) {
+        const userId = response.data.user._id; // Store user ID from the response
         const userRole = response.data.user.role; // Get user role from the response
 
-        // Store the JWT token in localStorage
+        // Store the JWT token and user ID in localStorage
         localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem("userId", userId); // Store userId in localStorage
 
         // Role-based redirection
         if (userRole === "admin") {

@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { useCart } from "../../components/CartContext";
+// src/components/ProductList.jsx
+import React, { useState } from "react";
+import { useCart } from "../../components/CartContext"; // Import your CartContext
 import NewProductModal from "../../components/NewProductModal.jsx";
-import LogoutModal from "../../components/LogoutModal.jsx"; // Import LogoutModal
+import LogoutModal from "../../components/LogoutModal.jsx";
 import cartImg from "../../assets/images/cart.png";
-import { Link } from "react-router-dom"; // Import Link for routing
+import { Link } from "react-router-dom";
 
 const products = [
   {
@@ -41,7 +42,7 @@ const products = [
   },
   {
     id: 4,
-    name: "Men's  Tee in black.",
+    name: "Men's Tee in black.",
     href: "#",
     price: "$35",
     imageSrc:
@@ -62,7 +63,7 @@ const products = [
   },
   {
     id: 6,
-    name: "Men's  Tee in black.",
+    name: "Men's Tee in black.",
     href: "#",
     price: "$35",
     imageSrc:
@@ -84,7 +85,7 @@ const products = [
   },
   {
     id: 8,
-    name: "Machined Mechanical ",
+    name: "Machined Mechanical",
     href: "#",
     price: "$35",
     imageSrc:
@@ -97,25 +98,17 @@ const products = [
 ];
 
 export default function ProductList() {
-  const { addToCart, getTotalQuantity } = useCart(); // Get the total quantity
+  const { addToCart, getTotalQuantity } = useCart(); // Use the context
   const [modalOpen, setModalOpen] = useState(false);
-  const [logoutModalOpen, setLogoutModalOpen] = useState(false); // State for logout modal
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleProductClick = (product) => {
     setSelectedProduct(product);
     setModalOpen(true);
   };
 
-  // Logout function
-  const handleLogout = () => {
-    // Perform logout logic here (e.g., clear user session, token, etc.)
-    console.log("User logged out"); // Replace this with your actual logout logic
-    setLogoutModalOpen(false); // Close modal after logout
-  };
-
-  // Filter products based on search query
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -130,11 +123,9 @@ export default function ProductList() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="border border-gray-300 rounded-lg p-2 w-full max-w-md"
+            aria-label="Search products"
           />
-          <button
-            onClick={() => console.log("Search for:", searchQuery)} // You can replace this with your search logic
-            className="hidden sm:block ml-2 bg-green-500 text-white rounded-lg px-4 py-2"
-          >
+          <button className="hidden sm:block ml-2 bg-green-500 text-white rounded-lg px-4 py-2">
             Search
           </button>
         </div>
@@ -143,14 +134,14 @@ export default function ProductList() {
             <img src={cartImg} alt="Cart" className="h-8 w-8" />
             {getTotalQuantity() > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                {getTotalQuantity()}
+                {getTotalQuantity()} {/* Show total quantity */}
               </span>
             )}
             <p>Cart</p>
           </Link>
           <button
-            onClick={() => setLogoutModalOpen(true)} // Open logout modal
-            className="ml-4 bg-red-500 text-white rounded-lg px-2 py-1 text-xs sm:text-xs md:px-4 md:py-2 md:text-base" // Adjusted responsive styling
+            onClick={() => setLogoutModalOpen(true)}
+            className="ml-4 bg-red-500 text-white rounded-lg px-2 py-1 text-xs sm:text-xs md:px-4 md:py-2 md:text-base"
           >
             Logout
           </button>
@@ -178,6 +169,15 @@ export default function ProductList() {
                   {product.price}
                 </p>
               </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent modal from opening
+                  addToCart(product); // Add product to cart
+                }}
+                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Add to Cart
+              </button>
             </div>
           ))}
         </div>
@@ -192,7 +192,11 @@ export default function ProductList() {
       <LogoutModal
         open={logoutModalOpen}
         setOpen={setLogoutModalOpen}
-        onLogout={handleLogout} // Pass logout function
+        onLogout={() => {
+          // Implement logout logic here
+          console.log("User logged out");
+          setLogoutModalOpen(false);
+        }}
       />
     </div>
   );
