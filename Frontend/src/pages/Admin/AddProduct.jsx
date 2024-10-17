@@ -122,7 +122,7 @@ const AddProduct = () => {
       <div className="w-full px-6 mx-auto">
         <AdminHeader />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:items-center lg:justify-center">
-          <div className="lg:pl-[100px] py-10 lg:py-0 flex flex-col justify-center ">
+          <div className="lg:pl-[200px] py-10 lg:py-0 flex flex-col justify-center ">
             <div className=" py-10 lg:py-0 flex flex-col items-start">
               {" "}
               {/* Changed justify-center to items-start */}
