@@ -10,7 +10,7 @@ const DeleteProduct = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `https://ecommerce-website-jhgs.onrender.com/api/products`
+          `https://e-commerce-website1-4kwy.onrender.com/api/products`
         );
         setProducts(response.data);
       } catch (error) {
@@ -27,7 +27,7 @@ const DeleteProduct = () => {
         const token = localStorage.getItem("token"); // Ensure this is the correct way you store your token
 
         await axios.delete(
-          `https://ecommerce-website-jhgs.onrender.com/api/products/${id}`,
+          `https://e-commerce-website1-4kwy.onrender.com/api/products/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Include the token

@@ -97,7 +97,7 @@ const AddProduct = () => {
       const token = localStorage.getItem("token"); // Retrieve the token here
 
       const response = await axios.post(
-        `https://ecommerce-website-jhgs.onrender.com/api/products`,
+        `https://e-commerce-website1-4kwy.onrender.com/api/products`,
         formData,
         {
           headers: {

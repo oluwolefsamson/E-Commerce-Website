@@ -20,7 +20,7 @@ export default function ProductList() {
   const fetchProducts = async () => {
     try {
       const response = await axios.get(
-        "https://ecommerce-website-jhgs.onrender.com/api/products"
+        "https://e-commerce-website1-4kwy.onrender.com/api/products"
       ); // Adjust the URL as necessary
       setProducts(response.data);
       setLoading(false);
