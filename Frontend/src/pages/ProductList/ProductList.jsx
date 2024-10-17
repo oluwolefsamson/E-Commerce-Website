@@ -6,6 +6,7 @@ import LogoutModal from "../../components/LogoutModal.jsx";
 import cartImg from "../../assets/images/cart.png";
 import { Link } from "react-router-dom";
 import axios from "axios"; // Import axios
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function ProductList() {
   const { addToCart, getTotalQuantity } = useCart(); // Use the context
@@ -19,9 +20,7 @@ export default function ProductList() {
   // Function to fetch products
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(
-        "https://e-commerce-website1-4kwy.onrender.com/api/products"
-      ); // Adjust the URL as necessary
+      const response = await axios.get(`${apiUrl}/products`); // Adjust the URL as necessary
       setProducts(response.data);
       setLoading(false);
     } catch (error) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import AdminHeader from "../../components/AdminHeader";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 const DeleteProduct = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -9,9 +9,7 @@ const DeleteProduct = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          `https://e-commerce-website1-4kwy.onrender.com/api/products`
-        );
+        const response = await axios.get(`${apiUrl}/products`);
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -26,14 +24,11 @@ const DeleteProduct = () => {
       try {
         const token = localStorage.getItem("token"); // Ensure this is the correct way you store your token
 
-        await axios.delete(
-          `https://e-commerce-website1-4kwy.onrender.com/api/products/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token
-            },
-          }
-        );
+        await axios.delete(`${apiUrl}/products/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token
+          },
+        });
 
         // Update state to remove the deleted product
         setProducts((prev) => prev.filter((product) => product._id !== id));

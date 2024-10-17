@@ -6,6 +6,7 @@ import axios from "axios";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -47,10 +48,7 @@ const Signup = () => {
     setError("");
 
     try {
-      const response = await axios.post(
-        `https://e-commerce-website1-4kwy.onrender.com/api/users/register`,
-        formData
-      );
+      const response = await axios.post(`${apiUrl}/users/register`, formData);
       console.log(response.data);
       navigate("/"); // Redirect to login page after successful registration
     } catch (err) {

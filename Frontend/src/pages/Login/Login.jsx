@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { DotLoader } from "react-spinners";
 import axios from "axios";
 import loginImg from "../../assets/images/login.jpg";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        `https://e-commerce-website1-4kwy.onrender.com/api/users/login`, // Backend API URL
+        `${apiUrl}/users/login`, // Backend API URL
         formData
       );
 

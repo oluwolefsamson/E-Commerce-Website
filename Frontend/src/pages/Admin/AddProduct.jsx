@@ -6,7 +6,7 @@ import profile from "../../assets/images/profile.jpg";
 import AdminHeader from "../../components/AdminHeader";
 import proImg from "../../assets/images/products.jpg";
 import { jwtDecode } from "jwt-decode";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 const AddProduct = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -96,15 +96,11 @@ const AddProduct = () => {
     try {
       const token = localStorage.getItem("token"); // Retrieve the token here
 
-      const response = await axios.post(
-        `https://e-commerce-website1-4kwy.onrender.com/api/products`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the headers
-          },
-        }
-      );
+      const response = await axios.post(`${apiUrl}/products`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+        },
+      });
 
       console.log("Product created:", response.data);
       alert("Product created");
