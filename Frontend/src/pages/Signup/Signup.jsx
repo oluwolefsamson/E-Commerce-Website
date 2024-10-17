@@ -49,12 +49,7 @@ const Signup = () => {
     try {
       const response = await axios.post(
         `https://e-commerce-website-wpi1.onrender.com/api/users/register`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        formData
       );
       console.log(response.data);
       navigate("/"); // Redirect to login page after successful registration
