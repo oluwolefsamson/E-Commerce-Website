@@ -11,11 +11,16 @@ dotenv.config();
 
 const app = express();
 
-// Use the CORS middleware before any routes
+const allowedOrigins = [
+  "https://e-commerce-website-iota-taupe.vercel.app", // my Vercel app
+  "http://localhost:5173", // my local development
+];
+
 app.use(
   cors({
-    origin: "https://e-commerce-website-iota-taupe.vercel.app", // Specify your frontend URL
-    credentials: true, // If you're using cookies or authentication tokens
+    origin: allowedOrigins,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
   })
 );
 
