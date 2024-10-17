@@ -41,6 +41,9 @@ const Login = () => {
         localStorage.setItem("authToken", response.data.token);
         localStorage.setItem("userId", userId); // Store userId in localStorage
 
+        // Log the token in the console
+        console.log("Login successful! Token:", response.data.token); // Log the token
+
         // Role-based redirection
         if (userRole === "admin") {
           // Redirect Admins to the addproduct page

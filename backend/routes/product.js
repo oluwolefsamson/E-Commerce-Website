@@ -7,8 +7,8 @@ const {
 const { authenticate, restrictToAdmin } = require("../middleware/auth");
 const router = express.Router();
 
-router.post("/", authenticate, restrictToAdmin, createProduct);
+router.post("/", createProduct);
 router.get("/", getAllProducts);
-router.delete("/:id", authenticate, restrictToAdmin, deleteProduct);
+router.delete("/:id", deleteProduct);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose"); // Import mongoose
 
 exports.register = async (req, res) => {
   const { username, email, password, phone, role } = req.body;
@@ -57,6 +58,43 @@ exports.login = async (req, res) => {
     // Respond with user details and token
     res.json({ token, user: userDetails });
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  console.log("Fetching all users..."); // Debug log
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    console.error("Error fetching users:", err); // Error log
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getUserById = async (req, res) => {
+  const { id } = req.params;
+
+  // Trim any whitespace from the ID
+  const trimmedId = id.trim();
+
+  // Validate ObjectID
+  if (!mongoose.isValidObjectId(trimmedId)) {
+    return res.status(400).json({ message: "Invalid user ID" });
+  }
+
+  try {
+    const user = await User.findById(trimmedId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Exclude the password before sending the response
+    const { password: _, ...userDetails } = user.toObject();
+    res.status(200).json(userDetails);
+  } catch (err) {
+    console.error(err); // Log the error for debugging
     res.status(500).json({ error: err.message });
   }
 };

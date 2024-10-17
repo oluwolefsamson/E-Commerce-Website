@@ -72,7 +72,7 @@ export default function CartPage() {
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
                                   alt={product.imageAlt}
-                                  src={product.imageSrc}
+                                  src={product.image}
                                   className="h-full w-full object-cover object-center"
                                 />
                               </div>
@@ -116,15 +116,18 @@ export default function CartPage() {
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
                       <p>
-                        $
+                        ₦
                         {cart
-                          .reduce(
-                            (total, product) =>
-                              total +
-                              parseFloat(product.price.slice(1)) *
-                                product.quantity,
-                            0
-                          )
+                          .reduce((total, product) => {
+                            const price =
+                              typeof product.price === "string"
+                                ? parseFloat(
+                                    product.price.replace(/[^0-9.-]+/g, "")
+                                  )
+                                : product.price; // If it's a number, use it directly
+
+                            return total + price * product.quantity; // Calculate total
+                          }, 0)
                           .toFixed(2)}
                       </p>
                     </div>
