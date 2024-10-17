@@ -14,7 +14,7 @@ const app = express();
 // Use the CORS middleware before any routes
 app.use(
   cors({
-    origin: "http://localhost:5173", // Specify your frontend URL
+    origin: "https://e-commerce-website-iota-taupe.vercel.app", // Specify your frontend URL
     credentials: true, // If you're using cookies or authentication tokens
   })
 );
