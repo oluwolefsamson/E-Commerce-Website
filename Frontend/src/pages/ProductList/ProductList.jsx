@@ -1,36 +1,37 @@
-// src/components/ProductList.jsx
 import React, { useState, useEffect } from "react";
-import { useCart } from "../../components/CartContext"; // Import your CartContext
+import { useCart } from "../../components/CartContext";
 import NewProductModal from "../../components/NewProductModal.jsx";
 import LogoutModal from "../../components/LogoutModal.jsx";
 import cartImg from "../../assets/images/cart.png";
 import { Link } from "react-router-dom";
-import axios from "axios"; // Import axios
+import axios from "axios";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function ProductList() {
-  const { addToCart, getTotalQuantity } = useCart(); // Use the context
+  const { addToCart, getTotalQuantity } = useCart();
   const [modalOpen, setModalOpen] = useState(false);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [products, setProducts] = useState([]); // State to hold products
-  const [loading, setLoading] = useState(true); // State for loading status
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Function to fetch products
+  // Fetch products from the API
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/products`); // Adjust the URL as necessary
+      const response = await axios.get(`${apiUrl}/products`);
+      console.log("Fetched Products:", response.data);
       setProducts(response.data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching products:", error);
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProducts(); // Call the function to fetch products when the component mounts
+    fetchProducts(); // Fetch products on mount
   }, []);
 
   const handleProductClick = (product) => {
@@ -66,7 +67,7 @@ export default function ProductList() {
                 {getTotalQuantity()} {/* Show total quantity */}
               </span>
             )}
-            <p class="hidden sm:block">Cart</p>
+            <p className="hidden sm:block">Cart</p>
           </Link>
           <button
             onClick={() => setLogoutModalOpen(true)}
@@ -77,7 +78,7 @@ export default function ProductList() {
         </div>
       </header>
 
-      {loading ? ( // Display loading message while fetching
+      {loading ? (
         <div className="text-center py-16">
           <p>Loading products...</p>
         </div>
@@ -87,14 +88,14 @@ export default function ProductList() {
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {filteredProducts.map((product) => (
               <div
-                key={product.id}
+                key={product._id} // Use product._id as key for uniqueness
                 className="group cursor-pointer"
                 onClick={() => handleProductClick(product)}
               >
                 <div className="w-full h-48 sm:h-56 lg:h-64 overflow-hidden rounded-lg bg-gray-200 flex items-center justify-center">
                   <img
                     src={product.image}
-                    alt={product.imageAlt || product.name} // Fallback to name if alt is not provided
+                    alt={product.imageAlt || product.name}
                     className="object-cover object-center w-full h-full"
                   />
                 </div>
@@ -107,6 +108,7 @@ export default function ProductList() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent modal from opening
+                    console.log("Adding to cart:", product);
                     addToCart(product); // Add product to cart
                   }}
                   className="mt-2 bg-green-500 text-white px-4 py-2 rounded"
@@ -130,7 +132,6 @@ export default function ProductList() {
         open={logoutModalOpen}
         setOpen={setLogoutModalOpen}
         onLogout={() => {
-          // Implement logout logic here
           console.log("User logged out");
           setLogoutModalOpen(false);
         }}

@@ -1,4 +1,3 @@
-// CartContext.jsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
@@ -10,15 +9,17 @@ export function CartProvider({ children }) {
   });
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart)); // Sync cart with local storage
+    localStorage.setItem("cart", JSON.stringify(cart));
+    console.log("Cart updated in localStorage:", cart);
   }, [cart]);
 
   const addToCart = (product) => {
-    const existingProduct = cart.find((item) => item.id === product.id);
+    console.log("Adding Product:", product);
+    const existingProduct = cart.find((item) => item._id === product._id); // Use _id for consistency
     if (existingProduct) {
       setCart((prevCart) =>
         prevCart.map((item) =>
-          item.id === product.id
+          item._id === product._id
             ? { ...existingProduct, quantity: existingProduct.quantity + 1 }
             : item
         )
@@ -29,12 +30,16 @@ export function CartProvider({ children }) {
   };
 
   const removeFromCart = (id) => {
-    setCart((prevCart) => prevCart.filter((product) => product.id !== id));
+    setCart((prevCart) => prevCart.filter((product) => product._id !== id)); // Use _id for consistency
   };
 
-  // New method to get the total quantity of items in the cart
   const getTotalQuantity = () => {
-    return cart.reduce((total, item) => total + item.quantity, 0);
+    const totalQuantity = cart.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+    console.log("Total Quantity in Cart:", totalQuantity);
+    return totalQuantity;
   };
 
   return (

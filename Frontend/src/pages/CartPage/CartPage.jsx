@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   Dialog,
@@ -7,19 +5,18 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { XMarkIcon, ShoppingCartIcon } from "@heroicons/react/24/outline"; // Import ShoppingCartIcon
-import { useCart } from "../../components/CartContext"; // Import the useCart hook
+import { XMarkIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { useCart } from "../../components/CartContext";
 
 export default function CartPage() {
-  const { cart, removeFromCart } = useCart(); // Get the cart state and remove function
-  const [open, setOpen] = useState(false); // Start with the cart closed
+  const { cart, removeFromCart } = useCart();
+  const [open, setOpen] = useState(false);
 
   return (
     <div>
-      {/* Open Cart Icon/Button */}
       <button
         type="button"
-        onClick={() => setOpen(true)} // Set open to true to show cart
+        onClick={() => setOpen(true)}
         className="fixed bottom-4 right-4 p-3 bg-green-600 rounded-full text-white shadow-lg hover:bg-green-700"
       >
         <ShoppingCartIcon className="h-8 w-8" />
@@ -30,35 +27,27 @@ export default function CartPage() {
         onClose={() => setOpen(false)}
         className="relative z-10"
       >
-        <DialogBackdrop
-          transition
-          className="fixed inset-0 bg-green-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
-        />
+        <DialogBackdrop className="fixed inset-0 bg-green-500 bg-opacity-75 transition-opacity duration-500 ease-in-out" />
 
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
             <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-              <DialogPanel
-                transition
-                className="pointer-events-auto w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700"
-              >
+              <DialogPanel className="pointer-events-auto w-screen max-w-md transform transition duration-500 ease-in-out">
                 <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                   <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                     <div className="flex items-start justify-between">
                       <DialogTitle className="text-lg font-medium text-gray-900">
-                        Shopping cart
+                        Shopping Cart
                       </DialogTitle>
-                      <div className="ml-3 flex h-7 items-center">
-                        <button
-                          type="button"
-                          onClick={() => setOpen(false)}
-                          className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
-                        >
-                          <span className="absolute -inset-0.5" />
-                          <span className="sr-only">Close panel</span>
-                          <XMarkIcon aria-hidden="true" className="h-6 w-6" />
-                        </button>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setOpen(false)}
+                        className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
+                      >
+                        <span className="absolute -inset-0.5" />
+                        <span className="sr-only">Close panel</span>
+                        <XMarkIcon aria-hidden="true" className="h-6 w-6" />
+                      </button>
                     </div>
 
                     <div className="mt-8">
@@ -67,8 +56,11 @@ export default function CartPage() {
                           role="list"
                           className="-my-6 divide-y divide-gray-200"
                         >
-                          {cart.map((product) => (
-                            <li key={product.id} className="flex py-6">
+                          {cart.map((product, index) => (
+                            <li
+                              key={`${product._id}-${index}`}
+                              className="flex py-6"
+                            >
                               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                 <img
                                   alt={product.imageAlt}
@@ -76,14 +68,13 @@ export default function CartPage() {
                                   className="h-full w-full object-cover object-center"
                                 />
                               </div>
-
                               <div className="ml-4 flex flex-1 flex-col">
                                 <div>
                                   <div className="flex justify-between text-base font-medium text-gray-900">
                                     <h3>
                                       <a href={product.href}>{product.name}</a>
                                     </h3>
-                                    <p className="ml-4">{product.price}</p>
+                                    <p className="ml-4">₦{product.price}</p>
                                   </div>
                                   <p className="mt-1 text-sm text-gray-500">
                                     {product.color}
@@ -94,15 +85,13 @@ export default function CartPage() {
                                     Qty {product.quantity}
                                   </p>
 
-                                  <div className="flex">
-                                    <button
-                                      type="button"
-                                      onClick={() => removeFromCart(product.id)}
-                                      className="font-medium text-green-600 hover:text-green-500"
-                                    >
-                                      Remove
-                                    </button>
-                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => removeFromCart(product._id)} // Use _id for consistency
+                                    className="font-medium text-green-600 hover:text-green-500"
+                                  >
+                                    Remove
+                                  </button>
                                 </div>
                               </div>
                             </li>
@@ -124,9 +113,8 @@ export default function CartPage() {
                                 ? parseFloat(
                                     product.price.replace(/[^0-9.-]+/g, "")
                                   )
-                                : product.price; // If it's a number, use it directly
-
-                            return total + price * product.quantity; // Calculate total
+                                : product.price;
+                            return total + price * product.quantity;
                           }, 0)
                           .toFixed(2)}
                       </p>
