@@ -3,10 +3,9 @@ import SignupImg from "../../assets/images/signup.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { HashLoader } from "react-spinners";
 import axios from "axios";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 const Signup = () => {
   const navigate = useNavigate();
-  const apiUrl = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
     username: "",
     email: "",
